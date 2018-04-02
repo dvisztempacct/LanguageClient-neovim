@@ -626,9 +626,24 @@ class LanguageClient:
             info = str.join("\n", [markedString_to_str(s) for s in contents])
         else:
             info = markedString_to_str(contents)
-        echo(info)
+        #echo(info)
+        messageBuffer = self._getMessageBuffer()
+        messageBuffer[:] = info.splitlines()
 
         return result
+
+    def _getMessageBuffer(self):
+        if not state['messageBuffer']:
+            currentWindow = state['nvim'].current.window
+            state['nvim'].command("10.new | set ft=lc-hover")
+            numWindows = len(state['nvim'].windows)
+            if numWindows < 2:
+                logger.error("error creating message window: numWindows < 2")
+                return
+            state['messageWindow'] = state['nvim'].current.window
+            state['messageBuffer'] = state['messageWindow'].buffer
+            state['nvim'].current.window = currentWindow
+        return state['messageBuffer']
 
     @neovim.function("LanguageClient_textDocument_definition")
     @deco_args

@@ -30,6 +30,9 @@ state = {
     "diagnosticsDisplay": DiagnosticsDisplay,  # how to display diagnostics.
     # Maximum MessageType to echoshow messages from window/logMessage.
     "windowLogMessageLevel": MessageType.Warning,
+    # Multi-line message window and buffer
+    "messageWindow": None,
+    "messageBuffer": None,
 }  # type: Dict[str, Any]
 
 
